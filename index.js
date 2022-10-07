@@ -1,7 +1,14 @@
 const express = require('express')
+var morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+//customise morgan (logger) token to include the POST request body
+morgan.token('body', (req, res) => {return JSON.stringify(req.body)});
+//Put together the rest of the stuff you want to log
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -69,13 +76,13 @@ app.get('/', (request, response) => {
     
   
     const person = request.body
-    console.log(person.name)
+    //console.log(person.name)
     if (person.name === undefined || person.name=== '' || person.number === undefined || person.number=== ''){
-      console.log("name cannot be empty")
+      //console.log("name cannot be empty")
       response.status(400).json({error: `Name or number field cannot be empty`, status: 400}).end()
     }
     else if (persons.find(p =>p.name===person.name)){
-      console.log(person.name)
+      //console.log(person.name)
       response.status(400).json({error: `Name must be unique. ${person.name} already exists in phonebook.`, status: 400}).end()
     }
     else {
