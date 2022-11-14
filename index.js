@@ -6,6 +6,7 @@ const cors = require('cors')
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build')) // middleware for 
 //customise morgan (logger) token to include the POST request body
 morgan.token('body', (req, res) => {return JSON.stringify(req.body)});
 //Put together the rest of the stuff you want to log
@@ -39,10 +40,7 @@ let persons = [
     "number": "39-23-6423122"
   }
 ]
-app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-  })
-  
+
   app.get('/info', (request, response) => {
     const phonebookSize = persons.length;
     const dt = new Date();
